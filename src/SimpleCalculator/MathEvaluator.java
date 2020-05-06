@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MathEvaluator {
-    public BigDecimal calculate(String expression)  throws Exception{
+    public BigDecimal calculate(String expression) {
         List<BigDecimal> numberParts = new LinkedList<>();
         List<String> operators = new LinkedList<>();
         int index = 0;

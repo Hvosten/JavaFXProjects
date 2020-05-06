@@ -14,6 +14,7 @@ public class Main extends Application {
         primaryStage.setTitle("Calculator v1.0");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
+
         primaryStage.show();
     }
 

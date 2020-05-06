@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -49,7 +51,7 @@ public class Controller {
 
     MathEvaluator evaluator = new MathEvaluator();
 
-    private static final int MAX_LENGTH = 40;
+    private static final int MAX_LENGTH = 30;
     private static final Background blueBackground = new Background(new BackgroundFill(Color.rgb(48, 167, 227), null, null));
     private static final Background yellowBackground = new Background(new BackgroundFill(Color.rgb(207, 176, 6), null, null));
     private static final Background blackBackground = new Background(new BackgroundFill(Color.rgb(56, 56, 56), null, null));
@@ -64,6 +66,50 @@ public class Controller {
     }
 
     private void addListeners() {
+        gridBox.setOnKeyPressed(keyEvent -> {
+            System.out.println(keyEvent.getText() + " " + keyEvent.getCode());
+            switch (keyEvent.getCode()){
+                case BACK_SPACE:
+                    currDisplay = (currDisplay.length()==1 || currDisplay.equals("ERROR")) ? "0" : currDisplay.substring(0,currDisplay.length()-1);
+                    setNewDisplay();
+                    break;
+                case CLEAR:
+                    break;
+                case DIGIT0:
+                case DIGIT1:
+                case DIGIT2:
+                case DIGIT3:
+                case DIGIT4:
+                case DIGIT5:
+                case DIGIT6:
+                case DIGIT7:
+                case DIGIT8:
+                case DIGIT9:
+                case NUMPAD0:
+                case NUMPAD1:
+                case NUMPAD2:
+                case NUMPAD3:
+                case NUMPAD4:
+                case NUMPAD5:
+                case NUMPAD6:
+                case NUMPAD7:
+                case NUMPAD8:
+                case NUMPAD9:
+                case ADD:
+                case MINUS:
+                case SUBTRACT:
+                case DIVIDE:
+                case SLASH:
+                case MULTIPLY:
+                case PERIOD:
+                    String addend = keyEvent.getText();
+                    if(!currDisplay.equals("ERROR") && currDisplay.length()+addend.length() <= MAX_LENGTH){
+                        currDisplay = (currDisplay.equals("0")) ?  addend : currDisplay + addend;
+                        setNewDisplay();
+                    }
+                    break;
+            }
+        });
         zeroButton.setOnAction(onClickAddToDisplay("0"));
         oneButton.setOnAction(onClickAddToDisplay("1"));
         twoButton.setOnAction(onClickAddToDisplay("2"));
@@ -90,18 +136,20 @@ public class Controller {
         });
 
         deleteButton.setOnAction(event -> {
-            currDisplay = currDisplay.length()==1 ? "0" : currDisplay.substring(0,currDisplay.length()-1);
+            currDisplay = (currDisplay.length()==1 || currDisplay.equals("ERROR")) ? "0" : currDisplay.substring(0,currDisplay.length()-1);
             setNewDisplay();
         });
 
         equalButton.setOnAction(event -> {
-            previousOperation = currDisplay;
-            try {
-                currDisplay = evaluator.calculate(currDisplay).stripTrailingZeros().toString();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(!currDisplay.equals("ERROR")){
+                previousOperation = currDisplay;
+                try {
+                    currDisplay = evaluator.calculate(currDisplay).stripTrailingZeros().toString();
+                } catch (Exception e) {
+                    currDisplay = "ERROR";
+                }
+                setNewDisplay();
             }
-            setNewDisplay();
         });
 
         revertButton.setOnAction(event -> {
@@ -151,7 +199,7 @@ public class Controller {
 
     private EventHandler<ActionEvent> onClickAddToDisplay(String addend){
         return event -> {
-            if(currDisplay.length()+addend.length() <= MAX_LENGTH){
+            if(!currDisplay.equals("ERROR") && currDisplay.length()+addend.length() <= MAX_LENGTH){
                 currDisplay = (currDisplay.equals("0")) ?  addend : currDisplay + addend;
                 setNewDisplay();
             }
@@ -160,7 +208,7 @@ public class Controller {
 
     private EventHandler<ActionEvent> onClickAddOperation(String operand){
         return event -> {
-            if(currDisplay.length() < MAX_LENGTH){
+            if(!currDisplay.equals("ERROR") && currDisplay.length() < MAX_LENGTH){
                 currDisplay += operand;
                 setNewDisplay();
             }
