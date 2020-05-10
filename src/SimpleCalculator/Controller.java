@@ -6,7 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -65,105 +66,6 @@ public class Controller {
         addListeners();
     }
 
-    private void addListeners() {
-        gridBox.setOnKeyPressed(keyEvent -> {
-            System.out.println(keyEvent.getText() + " " + keyEvent.getCode());
-            switch (keyEvent.getCode()){
-                case BACK_SPACE:
-                    currDisplay = (currDisplay.length()==1 || currDisplay.equals("ERROR")) ? "0" : currDisplay.substring(0,currDisplay.length()-1);
-                    setNewDisplay();
-                    break;
-                case CLEAR:
-                    break;
-                case DIGIT0:
-                case DIGIT1:
-                case DIGIT2:
-                case DIGIT3:
-                case DIGIT4:
-                case DIGIT5:
-                case DIGIT6:
-                case DIGIT7:
-                case DIGIT8:
-                case DIGIT9:
-                case NUMPAD0:
-                case NUMPAD1:
-                case NUMPAD2:
-                case NUMPAD3:
-                case NUMPAD4:
-                case NUMPAD5:
-                case NUMPAD6:
-                case NUMPAD7:
-                case NUMPAD8:
-                case NUMPAD9:
-                case ADD:
-                case MINUS:
-                case SUBTRACT:
-                case DIVIDE:
-                case SLASH:
-                case MULTIPLY:
-                case PERIOD:
-                    String addend = keyEvent.getText();
-                    if(!currDisplay.equals("ERROR") && currDisplay.length()+addend.length() <= MAX_LENGTH){
-                        currDisplay = (currDisplay.equals("0")) ?  addend : currDisplay + addend;
-                        setNewDisplay();
-                    }
-                    break;
-            }
-        });
-        zeroButton.setOnAction(onClickAddToDisplay("0"));
-        oneButton.setOnAction(onClickAddToDisplay("1"));
-        twoButton.setOnAction(onClickAddToDisplay("2"));
-        threeButton.setOnAction(onClickAddToDisplay("3"));
-        fourButton.setOnAction(onClickAddToDisplay("4"));
-        fiveButton.setOnAction(onClickAddToDisplay("5"));
-        sixButton.setOnAction(onClickAddToDisplay("6"));
-        sevenButton.setOnAction(onClickAddToDisplay("7"));
-        eightButton.setOnAction(onClickAddToDisplay("8"));
-        nineButton.setOnAction(onClickAddToDisplay("9"));
-        doubleZeroButton.setOnAction(onClickAddToDisplay("00"));
-        leftBracketButton.setOnAction(onClickAddToDisplay("("));
-        rightBracketButton.setOnAction(onClickAddToDisplay(")"));
-
-        additionButton.setOnAction(onClickAddOperation("+"));
-        subtractionButton.setOnAction(onClickAddOperation("-"));
-        divisionButton.setOnAction(onClickAddOperation("/"));
-        multiplicationButton.setOnAction(onClickAddOperation("*"));
-        dotButton.setOnAction(onClickAddOperation("."));
-
-        clearButton.setOnAction(event -> {
-            currDisplay = "0";
-            setNewDisplay();
-        });
-
-        deleteButton.setOnAction(event -> {
-            currDisplay = (currDisplay.length()==1 || currDisplay.equals("ERROR")) ? "0" : currDisplay.substring(0,currDisplay.length()-1);
-            setNewDisplay();
-        });
-
-        equalButton.setOnAction(event -> {
-            if(!currDisplay.equals("ERROR")){
-                previousOperation = currDisplay;
-                try {
-                    currDisplay = evaluator.calculate(currDisplay).stripTrailingZeros().toString();
-                } catch (Exception e) {
-                    currDisplay = "ERROR";
-                }
-                setNewDisplay();
-            }
-        });
-
-        revertButton.setOnAction(event -> {
-            if(!previousOperation.equals("n/a")){
-                currDisplay = previousOperation;
-                setNewDisplay();
-            }
-        });
-    }
-
-    private void setNewDisplay() {
-        displayField.textProperty().setValue(currDisplay);
-    }
-
     private void colorizeComponent() {
         gridBox.setBackground(greyBackground);
 
@@ -197,9 +99,158 @@ public class Controller {
         divisionButton.setBackground(yellowBackground);
     }
 
+    private void setNewDisplay() {
+        displayField.textProperty().setValue(currDisplay);
+    }
+
+    private void addListeners() {
+        addKeyListeners();
+        addButtonListeners();
+    }
+
+    private void addButtonListeners() {
+        zeroButton.setOnAction(onClickAddToDisplay("0"));
+        oneButton.setOnAction(onClickAddToDisplay("1"));
+        twoButton.setOnAction(onClickAddToDisplay("2"));
+        threeButton.setOnAction(onClickAddToDisplay("3"));
+        fourButton.setOnAction(onClickAddToDisplay("4"));
+        fiveButton.setOnAction(onClickAddToDisplay("5"));
+        sixButton.setOnAction(onClickAddToDisplay("6"));
+        sevenButton.setOnAction(onClickAddToDisplay("7"));
+        eightButton.setOnAction(onClickAddToDisplay("8"));
+        nineButton.setOnAction(onClickAddToDisplay("9"));
+        doubleZeroButton.setOnAction(onClickAddToDisplay("00"));
+        leftBracketButton.setOnAction(onClickAddToDisplay("("));
+        rightBracketButton.setOnAction(onClickAddToDisplay(")"));
+
+        additionButton.setOnAction(onClickAddOperation("+"));
+        subtractionButton.setOnAction(onClickAddOperation("-"));
+        divisionButton.setOnAction(onClickAddOperation("/"));
+        multiplicationButton.setOnAction(onClickAddOperation("*"));
+        dotButton.setOnAction(onClickAddOperation("."));
+
+        clearButton.setOnAction(event -> {
+            currDisplay = "0";
+            setNewDisplay();
+        });
+
+        deleteButton.setOnAction(event -> {
+            currDisplay = (currDisplay.length()==1 || !noErrorOnDisplay()) ? "0" : currDisplay.substring(0,currDisplay.length()-1);
+            setNewDisplay();
+        });
+
+        equalButton.setOnAction(event -> {
+            if(noErrorOnDisplay()){
+                previousOperation = currDisplay;
+                try {
+                    currDisplay = evaluator.calculate(currDisplay).stripTrailingZeros().toPlainString();
+                } catch (Exception e) {
+                    currDisplay = "ERROR";
+                }
+                setNewDisplay();
+            }
+        });
+
+        revertButton.setOnAction(event -> {
+            if(!previousOperation.equals("n/a")){
+                currDisplay = previousOperation;
+                setNewDisplay();
+            }
+        });
+    }
+
+    private void addKeyListeners() {
+        gridBox.setOnKeyPressed(keyEvent -> {
+            KeyCombination plusCombination = new KeyCodeCombination(KeyCode.EQUALS,KeyCombination.SHIFT_DOWN);
+            KeyCombination leftBracketCombination = new KeyCodeCombination(KeyCode.DIGIT9,KeyCombination.SHIFT_DOWN);
+            KeyCombination rightBracketCombination = new KeyCodeCombination(KeyCode.DIGIT0,KeyCombination.SHIFT_DOWN);
+            String addend = "";
+            if(plusCombination.match(keyEvent)){
+                addend = "+";
+                if(noErrorOnDisplay() && isPlaceOnDisplay(addend))
+                    currDisplay += addend;
+            }
+            else if(leftBracketCombination.match(keyEvent)){
+                addend = "(";
+                if (noErrorOnDisplay() && isPlaceOnDisplay(addend))
+                    currDisplay = (currDisplay.equals("0")) ? addend : currDisplay + addend;
+            }
+            else if(rightBracketCombination.match(keyEvent)){
+                addend = ")";
+                if (noErrorOnDisplay() && isPlaceOnDisplay(addend))
+                    currDisplay = (currDisplay.equals("0")) ? addend : currDisplay + addend;
+            }
+            else {
+                switch (keyEvent.getCode()) {
+                    case BACK_SPACE:
+                        currDisplay = (currDisplay.length() == 1 || !noErrorOnDisplay()) ? "0" : currDisplay.substring(0, currDisplay.length() - 1);
+                        break;
+                    case DELETE:
+                        currDisplay = "0";
+                        break;
+                    case DIGIT0:
+                    case DIGIT1:
+                    case DIGIT2:
+                    case DIGIT3:
+                    case DIGIT4:
+                    case DIGIT5:
+                    case DIGIT6:
+                    case DIGIT7:
+                    case DIGIT8:
+                    case DIGIT9:
+                    case NUMPAD0:
+                    case NUMPAD1:
+                    case NUMPAD2:
+                    case NUMPAD3:
+                    case NUMPAD4:
+                    case NUMPAD5:
+                    case NUMPAD6:
+                    case NUMPAD7:
+                    case NUMPAD8:
+                    case NUMPAD9:
+                        addend = keyEvent.getText();
+                        if (noErrorOnDisplay() && isPlaceOnDisplay(addend))
+                            currDisplay = (currDisplay.equals("0")) ? addend : currDisplay + addend;
+                        break;
+                    case ADD:
+                    case MINUS:
+                    case SUBTRACT:
+                    case DIVIDE:
+                    case SLASH:
+                    case MULTIPLY:
+                    case PERIOD:
+                        addend = keyEvent.getText();
+                        if (noErrorOnDisplay() && isPlaceOnDisplay(addend))
+                            currDisplay += addend;
+                        break;
+                    case DECIMAL:
+                        addend = ".";
+                        if (noErrorOnDisplay() && isPlaceOnDisplay(addend))
+                            currDisplay += addend;
+                        break;
+                    case EQUALS:
+                        if (noErrorOnDisplay()) {
+                            previousOperation = currDisplay;
+                            try {
+                                currDisplay = evaluator.calculate(currDisplay).stripTrailingZeros().toPlainString();
+                            } catch (Exception e) {
+                                currDisplay = "ERROR";
+                            }
+                        }
+                        break;
+                    case R:
+                        if (!previousOperation.equals("n/a"))
+                            currDisplay = previousOperation;
+                        break;
+                }
+            }
+            setNewDisplay();
+        });
+    }
+
     private EventHandler<ActionEvent> onClickAddToDisplay(String addend){
         return event -> {
-            if(!currDisplay.equals("ERROR") && currDisplay.length()+addend.length() <= MAX_LENGTH){
+            if(noErrorOnDisplay() && isPlaceOnDisplay(addend)){
                 currDisplay = (currDisplay.equals("0")) ?  addend : currDisplay + addend;
                 setNewDisplay();
             }
@@ -208,10 +259,18 @@ public class Controller {
 
     private EventHandler<ActionEvent> onClickAddOperation(String operand){
         return event -> {
-            if(!currDisplay.equals("ERROR") && currDisplay.length() < MAX_LENGTH){
+            if(noErrorOnDisplay() && isPlaceOnDisplay(operand)){
                 currDisplay += operand;
                 setNewDisplay();
             }
         };
+    }
+
+    private boolean noErrorOnDisplay() {
+        return !currDisplay.equals("ERROR");
+    }
+
+    private boolean isPlaceOnDisplay(String addend) {
+        return currDisplay.length() + addend.length() <= MAX_LENGTH;
     }
 }
