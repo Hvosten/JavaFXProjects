@@ -76,5 +76,6 @@ public class MathEvaluator {
     private BigDecimal convertSingleNumber(String expression) {
         return new BigDecimal(expression);
     }
+
 }
 
