@@ -3,6 +3,7 @@
 ##############################
 out/
 target/
+images/
 .idea/
 .idea_modules/
 *.iml

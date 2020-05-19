@@ -8,16 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 public class Controller {
     @FXML private GridPane gridBox;
-    @FXML private VBox vBox;
-    @FXML private TextField middleBar;
 
     @FXML private TextField displayField;
 
@@ -50,53 +44,13 @@ public class Controller {
     private String currDisplay = "0";
     private String previousOperation = "n/a";
 
-    MathEvaluator evaluator = new MathEvaluator();
+    private final MathEvaluator evaluator = new MathEvaluator();
 
     private static final int MAX_LENGTH = 30;
-    private static final Background blueBackground = new Background(new BackgroundFill(Color.rgb(48, 167, 227), null, null));
-    private static final Background yellowBackground = new Background(new BackgroundFill(Color.rgb(207, 176, 6), null, null));
-    private static final Background blackBackground = new Background(new BackgroundFill(Color.rgb(56, 56, 56), null, null));
-    private static final Background redBackground = new Background(new BackgroundFill(Color.rgb(224, 91, 67), null, null));
-    private static final Background greenBackground = new Background(new BackgroundFill(Color.rgb(135, 245, 164), null, null));
-    private static final Background greyBackground = new Background(new BackgroundFill(Color.rgb(184, 173, 173), null, null));
 
     public void initialize(){
-        colorizeComponent();
         setNewDisplay();
         addListeners();
-    }
-
-    private void colorizeComponent() {
-        gridBox.setBackground(greyBackground);
-
-        vBox.setBackground(greenBackground);
-        middleBar.setBackground(greenBackground);
-
-        zeroButton.setBackground(blackBackground);
-        oneButton.setBackground(blackBackground);
-        twoButton.setBackground(blackBackground);
-        threeButton.setBackground(blackBackground);
-        fourButton.setBackground(blackBackground);
-        fiveButton.setBackground(blackBackground);
-        sixButton.setBackground(blackBackground);
-        sevenButton.setBackground(blackBackground);
-        eightButton.setBackground(blackBackground);
-        nineButton.setBackground(blackBackground);
-        doubleZeroButton.setBackground(blackBackground);
-        dotButton.setBackground(blackBackground);
-
-        clearButton.setBackground(redBackground);
-        deleteButton.setBackground(redBackground);
-
-        revertButton.setBackground(blueBackground);
-        leftBracketButton.setBackground(blueBackground);
-        rightBracketButton.setBackground(blueBackground);
-        equalButton.setBackground(blueBackground);
-
-        additionButton.setBackground(yellowBackground);
-        subtractionButton.setBackground(yellowBackground);
-        multiplicationButton.setBackground(yellowBackground);
-        divisionButton.setBackground(yellowBackground);
     }
 
     private void setNewDisplay() {

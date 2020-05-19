@@ -1,0 +1,107 @@
+.root {
+    blueBackground: rgb(48,167,227) ;
+    yellowBackground: rgb(207,176,6) ;
+    blackBackground: rgb(56,56,56) ;
+    redBackground: rgb(224,91,67) ;
+    greenBackground: rgb(135,245,164) ;
+    greyBackground: rgb(184,173,173)
+}
+
+#gridBox{
+     -fx-background-color: greyBackground
+}
+
+#vBox{
+    -fx-background-color: greenBackground
+}
+
+#middleBar{
+    -fx-background-color: greenBackground
+}
+
+#zeroButton{
+    -fx-background-color: blackBackground
+}
+
+#oneButton{
+    -fx-background-color: blackBackground
+}
+
+#twoButton{
+    -fx-background-color: blackBackground
+}
+
+#threeButton{
+    -fx-background-color: blackBackground
+}
+
+#fourButton{
+   -fx-background-color: blackBackground
+}
+
+#fiveButton{
+    -fx-background-color: blackBackground
+}
+
+#sixButton{
+    -fx-background-color: blackBackground
+}
+#sevenButton{
+    -fx-background-color: blackBackground
+}
+
+#eightButton{
+    -fx-background-color: blackBackground
+}
+
+#nineButton{
+    -fx-background-color: blackBackground
+}
+
+#doubleZeroButton{
+    -fx-background-color: blackBackground
+}
+
+#dotButton{
+    -fx-background-color: blackBackground
+}
+
+#clearButton{
+   -fx-background-color: redBackground
+}
+
+#deleteButton{
+   -fx-background-color: redBackground
+}
+
+#revertButton{
+    -fx-background-color: blueBackground
+}
+
+#leftBracketButton{
+    -fx-background-color: blueBackground
+}
+
+#rightBracketButton{
+   -fx-background-color: blueBackground
+}
+
+#equalButton{
+    -fx-background-color: blueBackground
+}
+
+#additionButton{
+    -fx-background-color: yellowBackground
+}
+
+#subtractionButton{
+    -fx-background-color: yellowBackground
+}
+
+#multiplicationButton{
+    -fx-background-color: yellowBackground
+}
+
+#divisionButton{
+    -fx-background-color: yellowBackground
+}
