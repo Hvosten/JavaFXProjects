@@ -4,7 +4,8 @@
     blackBackground: rgb(56,56,56) ;
     redBackground: rgb(224,91,67) ;
     greenBackground: rgb(135,245,164) ;
-    greyBackground: rgb(184,173,173)
+    greyBackground: rgb(184,173,173);
+    violetBackground: rgb(127,3,252)
 }
 
 #gridBox{
@@ -23,85 +24,174 @@
     -fx-background-color: blackBackground
 }
 
+#zeroButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #oneButton{
     -fx-background-color: blackBackground
+}
+
+#oneButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #twoButton{
     -fx-background-color: blackBackground
 }
 
+#twoButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #threeButton{
     -fx-background-color: blackBackground
+}
+
+#threeButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #fourButton{
    -fx-background-color: blackBackground
 }
 
+#fourButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #fiveButton{
     -fx-background-color: blackBackground
+}
+
+#fiveButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #sixButton{
     -fx-background-color: blackBackground
 }
+
+#sixButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #sevenButton{
     -fx-background-color: blackBackground
+}
+
+#sevenButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #eightButton{
     -fx-background-color: blackBackground
 }
 
+#eightButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #nineButton{
     -fx-background-color: blackBackground
+}
+
+#nineButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #doubleZeroButton{
     -fx-background-color: blackBackground
 }
 
+#doubleZeroButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #dotButton{
     -fx-background-color: blackBackground
+}
+
+#dotButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #clearButton{
    -fx-background-color: redBackground
 }
 
+#clearButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #deleteButton{
    -fx-background-color: redBackground
+}
+
+#deleteButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #revertButton{
     -fx-background-color: blueBackground
 }
 
+#revertButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #leftBracketButton{
     -fx-background-color: blueBackground
+}
+
+#leftBracketButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #rightBracketButton{
    -fx-background-color: blueBackground
 }
 
+#rightBracketButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #equalButton{
     -fx-background-color: blueBackground
+}
+
+#equalButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #additionButton{
     -fx-background-color: yellowBackground
 }
 
+#additionButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #subtractionButton{
     -fx-background-color: yellowBackground
+}
+
+#subtractionButton:hover{
+    -fx-background-color: violetBackground
 }
 
 #multiplicationButton{
     -fx-background-color: yellowBackground
 }
 
+#multiplicationButton:hover{
+    -fx-background-color: violetBackground
+}
+
 #divisionButton{
     -fx-background-color: yellowBackground
+}
+
+#divisionButton:hover{
+    -fx-background-color: violetBackground;
 }
